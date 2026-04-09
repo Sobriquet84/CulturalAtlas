@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cultural Atlas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-mid: #555;
+    --ink-soft: #888;
+    --ink-faint: #bbb;
+    --surface: #fafaf8;
+    --surface-2: #f2f1ee;
+    --border: rgba(0,0,0,0.09);
+    --border-mid: rgba(0,0,0,0.14);
+    --red: #C8102E;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body { font-family: var(--sans); background: var(--surface); color: var(--ink); font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(250,250,248,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 0.5px solid var(--border-mid);
+    height: 52px;
+    display: flex; align-items: center;
+    padding: 0 2rem; gap: 1rem;
+  }
+  .nav-brand { font-family: var(--serif); font-size: 17px; color: var(--ink); cursor: pointer; user-select: none; }
+  .nav-brand span { color: var(--red); }
+  .nav-back {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--ink-soft);
+    cursor: pointer; border: none; background: none;
+    font-family: var(--sans); padding: 4px 0; margin-left: auto;
+  }
+  .nav-back:hover { color: var(--ink); }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── HOME ── */
+  .home-hero { max-width: 820px; margin: 0 auto; padding: 4rem 2rem 3rem; border-bottom: 0.5px solid var(--border); }
+  .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.75rem; }
+  .home-hero h1 { font-family: var(--serif); font-size: clamp(42px, 6vw, 64px); font-weight: 400; line-height: 1.05; margin-bottom: 1rem; }
+  .home-hero h1 em { font-style: italic; color: var(--red); }
+  .home-hero p { font-size: 16px; color: var(--ink-mid); font-weight: 300; max-width: 500px; line-height: 1.75; }
+
+  .country-list {
+    max-width: 820px; margin: 2.5rem auto 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1px; background: var(--border-mid);
+    border: 0.5px solid var(--border-mid); border-radius: 12px; overflow: hidden;
+  }
+  .country-card {
+    background: white; padding: 1.25rem 1.5rem;
+    cursor: pointer; display: flex; align-items: center;
+    gap: 1rem; transition: background 0.15s;
+  }
+  .country-card:hover { background: var(--surface-2); }
+  .flag-wrap { width: 44px; height: 30px; border-radius: 3px; overflow: hidden; border: 0.5px solid var(--border-mid); flex-shrink: 0; }
+  .country-name { font-size: 15px; font-weight: 500; color: var(--ink); }
+  .country-region { font-size: 12px; color: var(--ink-soft); margin-top: 1px; }
+  .country-arrow { font-size: 16px; color: var(--ink-faint); margin-left: auto; }
+  .country-card:hover .country-arrow { color: var(--ink-mid); }
+
+  /* FLAGS */
+  /* Poland */
+  .flag-pl { display: flex; flex-direction: column; height: 100%; }
+  .flag-pl .f1 { background: #fff; flex: 1; }
+  .flag-pl .f2 { background: #DC143C; flex: 1; }
+
+  /* India */
+  .flag-in { display: flex; flex-direction: column; height: 100%; }
+  .flag-in .f1 { background: #FF9933; flex: 1; }
+  .flag-in .f2 { background: #fff; flex: 1; display: flex; align-items: center; justify-content: center; }
+  .flag-in .f3 { background: #138808; flex: 1; }
+  .flag-in .chakra { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #000080; }
+
+  /* USA — SVG-based for accuracy */
+  .flag-us { width: 100%; height: 100%; }
+
+  /* ── COUNTRY PAGE ── */
+  .country-page { max-width: 820px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+  .cp-hero {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 0.5px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 2rem; align-items: start;
+  }
+  .cp-hero h1 { font-family: var(--serif); font-size: clamp(40px, 6vw, 58px); font-weight: 400; line-height: 1.05; margin-bottom: 0.75rem; }
+  .cp-hero h1 em { font-style: italic; color: var(--red); }
+  .cp-tagline { font-size: 15px; color: var(--ink-mid); font-weight: 300; line-height: 1.75; max-width: 460px; margin-bottom: 1.25rem; }
+  .meta-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 0.5px solid var(--border-mid); color: var(--ink-mid); background: white; }
+
+  .cp-flag-block { flex-shrink: 0; text-align: center; }
+  .cp-flag-wrap { width: 90px; height: 60px; border-radius: 4px; overflow: hidden; border: 0.5px solid var(--border-mid); box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+  .cp-flag-label { font-size: 11px; color: var(--ink-faint); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* intro */
+  .cp-intro { padding: 2.5rem 0; border-bottom: 0.5px solid var(--border); }
+  .cp-intro p { font-size: 15px; color: var(--ink-mid); line-height: 1.85; font-weight: 300; margin-bottom: 1rem; }
+  .cp-intro p:last-child { margin-bottom: 0; }
+  .cp-intro strong { font-weight: 500; color: var(--ink); }
+
+  /* SECTION TABS */
+  .section-tabs { display: flex; border-bottom: 0.5px solid var(--border-mid); margin-top: 2.5rem; overflow-x: auto; gap: 0; }
+  .section-tab {
+    padding: 0 22px; height: 46px;
+    font-size: 13px; font-weight: 400; color: var(--ink-soft);
+    border: none; background: none; border-bottom: 2px solid transparent;
+    cursor: pointer; white-space: nowrap; font-family: var(--sans);
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+    letter-spacing: 0.01em;
+  }
+  .section-tab:hover { color: var(--ink); background: var(--surface-2); }
+  .section-tab.active { color: var(--ink); border-bottom-color: var(--red); font-weight: 500; }
+
+  /* SECTION PANELS — hidden by default */
+  .section-panel { display: none; padding: 2.5rem 0; }
+  .section-panel.active { display: block; }
+
+  .panel-intro { font-size: 15px; color: var(--ink-mid); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; max-width: 580px; }
+
+  /* content rows */
+  .item-row { padding: 1.25rem 0; border-top: 0.5px solid var(--border); }
+  .item-row:last-of-type { border-bottom: 0.5px solid var(--border); }
+  .item-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
+  .item-body { font-size: 14px; color: var(--ink-mid); line-height: 1.8; font-weight: 300; }
+  .item-body strong { font-weight: 500; color: var(--ink); }
+  .item-aside { margin-top: 0.75rem; padding: 0.65rem 0.9rem; background: var(--surface-2); border-radius: 8px; font-size: 13px; color: var(--ink-mid); line-height: 1.65; font-weight: 300; }
+  .item-aside strong { font-weight: 500; color: var(--ink); }
+
+  /* clash tags */
+  .clash-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--surface-2); color: var(--ink-mid); border: 0.5px solid var(--border-mid); white-space: nowrap; }
+  .tag-meets { font-size: 11px; color: var(--ink-faint); font-style: italic; }
+
+  /* tips */
+  .tips-block { margin-top: 2.5rem; }
+  .tips-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 1rem; }
+  .tip { display: flex; gap: 12px; margin-bottom: 0.75rem; align-items: flex-start; }
+  .tip-arrow { color: var(--ink-faint); font-size: 13px; padding-top: 3px; flex-shrink: 0; }
+  .tip-text { font-size: 14px; color: var(--ink-mid); line-height: 1.75; font-weight: 300; }
+  .tip-text strong { font-weight: 500; color: var(--ink); }
+
+  /* rabbit hole */
+  .rabbit-item { padding: 1.5rem 0; border-top: 0.5px solid var(--border); display: grid; grid-template-columns: 28px 1fr; gap: 1.25rem; }
+  .rabbit-item:last-child { border-bottom: 0.5px solid var(--border); }
+  .rabbit-num { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--ink-faint); line-height: 1.3; }
+
+  .coming-soon { padding: 4rem 0; text-align: center; color: var(--ink-faint); font-size: 15px; font-weight: 300; }
+
+  footer { border-top: 0.5px solid var(--border); padding: 2rem; text-align: center; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.03em; }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1.25rem; }
+    .home-hero { padding: 2.5rem 1.25rem 2rem; }
+    .country-list { margin: 1.5rem 1.25rem 0; grid-template-columns: 1fr; }
+    .country-page { padding: 0 1.25rem 3rem; }
+    .cp-hero { grid-template-columns: 1fr; }
+    .cp-flag-block { display: none; }
+    .section-tab { padding: 0 14px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand" onclick="showHome()">Cultural <span>Atlas</span></span>
+  <button class="nav-back" id="nav-back" onclick="showHome()">← All countries</button>
+</nav>
+
+<!-- ══════════════════════════════════
+     HOME
+══════════════════════════════════ -->
+<div id="view-home" class="view active">
+  <div class="home-hero">
+    <div class="eyebrow">An atlas of working culture</div>
+    <h1>Cultural <em>Atlas</em></h1>
+    <p>Everything you need to work well with colleagues from around the world — context, practical tips, and things worth knowing.</p>
+  </div>
+  <div class="country-list">
+
+    <div class="country-card" onclick="showCountry('poland')">
+      <div class="flag-wrap">
+        <div class="flag-pl"><div class="f1"></div><div class="f2"></div></div>
+      </div>
+      <div>
+        <div class="country-name">Poland</div>
+        <div class="country-region">Central Europe</div>
+      </div>
+      <span class="country-arrow">→</span>
+    </div>
+
+    <div class="country-card" onclick="showCountry('india')">
+      <div class="flag-wrap">
+        <div class="flag-in"><div class="f1"></div><div class="f2"><div class="chakra"></div></div><div class="f3"></div></div>
+      </div>
+      <div>
+        <div class="country-name">India</div>
+        <div class="country-region">South Asia</div>
+      </div>
+      <span class="country-arrow">→</span>
+    </div>
+
+    <div class="country-card" onclick="showCountry('usa')">
+      <div class="flag-wrap">
+        <svg class="flag-us" viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg">
+          <!-- 13 stripes -->
+          <rect width="90" height="60" fill="#B22234"/>
+          <rect y="4.6" width="90" height="4.6" fill="#fff"/>
+          <rect y="9.2" width="90" height="4.6" fill="#B22234"/>
+          <rect y="13.8" width="90" height="4.6" fill="#fff"/>
+          <rect y="18.4" width="90" height="4.6" fill="#B22234"/>
+          <rect y="23" width="90" height="4.6" fill="#fff"/>
+          <rect y="27.6" width="90" height="4.6" fill="#B22234"/>
+          <rect y="32.2" width="90" height="4.6" fill="#fff"/>
+          <rect y="36.8" width="90" height="4.6" fill="#B22234"/>
+          <rect y="41.4" width="90" height="4.6" fill="#fff"/>
+          <rect y="46" width="90" height="4.6" fill="#B22234"/>
+          <rect y="50.6" width="90" height="4.6" fill="#fff"/>
+          <rect y="55.2" width="90" height="4.8" fill="#B22234"/>
+          <!-- canton -->
+          <rect width="36" height="32" fill="#3C3B6E"/>
+          <!-- stars: 5 rows of 6, 4 rows of 5 -->
+          <g fill="#fff" font-size="4">
+            <!-- row 1 (6 stars) -->
+            <text x="3" y="6">★</text><text x="9" y="6">★</text><text x="15" y="6">★</text><text x="21" y="6">★</text><text x="27" y="6">★</text><text x="33" y="6">★</text>
+            <!-- row 2 (5 stars offset) -->
+            <text x="6" y="10">★</text><text x="12" y="10">★</text><text x="18" y="10">★</text><text x="24" y="10">★</text><text x="30" y="10">★</text>
+            <!-- row 3 (6 stars) -->
+            <text x="3" y="14">★</text><text x="9" y="14">★</text><text x="15" y="14">★</text><text x="21" y="14">★</text><text x="27" y="14">★</text><text x="33" y="14">★</text>
+            <!-- row 4 (5 stars offset) -->
+            <text x="6" y="18">★</text><text x="12" y="18">★</text><text x="18" y="18">★</text><text x="24" y="18">★</text><text x="30" y="18">★</text>
+            <!-- row 5 (6 stars) -->
+            <text x="3" y="22">★</text><text x="9" y="22">★</text><text x="15" y="22">★</text><text x="21" y="22">★</text><text x="27" y="22">★</text><text x="33" y="22">★</text>
+            <!-- row 6 (5 stars offset) -->
+            <text x="6" y="26">★</text><text x="12" y="26">★</text><text x="18" y="26">★</text><text x="24" y="26">★</text><text x="30" y="26">★</text>
+            <!-- row 7 (6 stars) -->
+            <text x="3" y="30">★</text><text x="9" y="30">★</text><text x="15" y="30">★</text><text x="21" y="30">★</text><text x="27" y="30">★</text><text x="33" y="30">★</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="country-name">United States</div>
+        <div class="country-region">North America</div>
+      </div>
+      <span class="country-arrow">→</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     POLAND
+══════════════════════════════════ -->
+<div id="view-poland" class="view">
+  <div class="country-page">
+
+    <div class="cp-hero">
+      <div>
+        <div class="eyebrow">Central Europe · EU member</div>
+        <h1>Po<em>land</em></h1>
+        <p class="cp-tagline">A country that has been erased, occupied, rebuilt, and transformed — and is still, somehow, entirely itself.</p>
+        <div class="meta-pills">
+          <span class="pill">Population 38M</span>
+          <span class="pill">Capital: Warsaw</span>
+          <span class="pill">Language: Polish</span>
+          <span class="pill">EU member since 2004</span>
+          <span class="pill">Currency: Złoty (PLN)</span>
+        </div>
+      </div>
+      <div class="cp-flag-block">
+        <div class="cp-flag-wrap">
+          <div class="flag-pl" style="height:100%;"><div class="f1"></div><div class="f2"></div></div>
+        </div>
+        <div class="cp-flag-label">POLSKA</div>
+      </div>
+    </div>
+
+    <div class="cp-intro">
+      <p>You can't really understand how Polish colleagues tick without knowing a little of what Poland has been through. This isn't history for history's sake — it's the backstory that explains a lot of what you'll encounter at work.</p>
+      <p>Poland spent 123 years wiped off the map, partitioned between Russia, Prussia, and Austria. Then came WWII — Poland lost around <strong>20% of its population</strong>, one of the highest tolls of any country. Then four decades of Soviet-imposed communism, followed by an abrupt leap into capitalism in 1989 with no manual and no safety net. In a single generation, Poland went from a command economy to one of Europe's most dynamic markets — the only EU country to avoid recession in 2008–09.</p>
+      <p>That's a lot of disruption to absorb. Polish working culture sits in a genuinely interesting middle ground — more formal and hierarchical than Western Europe in some ways, more direct and pragmatic than people often expect. Geographically and historically caught between East and West, the culture reflects both, and neither fully.</p>
+    </div>
+
+    <div class="section-tabs" id="poland-tabs">
+      <button class="section-tab" onclick="showTab('poland','work',this)">At work</button>
+      <button class="section-tab" onclick="showTab('poland','unwritten',this)">The unwritten</button>
+      <button class="section-tab" onclick="showTab('poland','decoder',this)">Misunderstanding decoder</button>
+      <button class="section-tab" onclick="showTab('poland','rabbit',this)">Down the rabbit hole</button>
+    </div>
+
+    <!-- AT WORK -->
+    <div id="poland-work" class="section-panel">
+      <p class="panel-intro">Polish working culture is shaped by history as much as by any management theory. Here's what you'll likely encounter.</p>
+      <div class="item-row">
+        <div class="item-title">They'll be straight with you</div>
+        <div class="item-body">Polish colleagues tend to say what they mean. If something isn't working, you'll probably hear about it — directly, without much wrapping. This can catch people off guard if they're used to more diplomatic feedback cultures, but it's worth reframing: <strong>directness here is a form of respect</strong>, not hostility. It means they're taking you and the work seriously. The absence of complaint is generally a good sign.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Trust takes time — and it's personal</div>
+        <div class="item-body">Don't expect deep collaboration to switch on from day one. Polish colleagues often take a while to open up, and that's not coldness — it's just how trust gets built. The key thing is that <strong>trust tends to be personal rather than institutional</strong> — a process or a contract doesn't create it, a relationship does. Time spent on informal conversation, showing up consistently, remembering small things — that's what moves the needle.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Skepticism as a form of engagement</div>
+        <div class="item-body">Don't expect a lot of vocal enthusiasm in meetings. Polish colleagues more often show investment by <strong>asking hard questions and raising objections</strong> than by expressing excitement. If someone is challenging your proposal in detail, they're probably the most engaged person in the room. Hollow positivity — "this is amazing!", "great work!" without substance — tends to land as hollow rather than encouraging.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Formality is the default starting point</div>
+        <div class="item-body">Polish professional culture tends to be more formal than Scandinavian or Anglo-American workplaces, especially in older companies. Titles and seniority carry weight. That said, the post-1989 generation and the tech sector have shifted things considerably. A practical rule: <strong>start formal and follow their lead</strong>. If they move to first names, follow. If they don't, don't push it.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Hierarchy is real — but so is the pragmatism</div>
+        <div class="item-body">Decisions in more traditional Polish companies can sit firmly at the top, and juniors may wait for seniors to set direction in meetings. At the same time, Polish workplaces — particularly in younger companies — can be surprisingly flat in practice. <strong>The formal structure and the actual way things get done</strong> don't always match, so it's worth paying attention to both.</div>
+      </div>
+      <div class="tips-block">
+        <div class="tips-label">Practical tips</div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Start a bit formal, let them set the pace.</strong> Pan (Mr) / Pani (Ms) + surname is the safe opening in traditional settings. In international teams it relaxes quickly — just take the cue from them.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Invest in the relationship before you need it.</strong> A shared coffee, remembering something they mentioned last week — this isn't small talk, it's foundation-laying.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Match their directness.</strong> Plain, honest, and respectful works better than diplomatic mush.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Don't mistake quiet for disengagement.</strong> Restraint and focus are not the same as indifference.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Be on time.</strong> Poland runs on linear time. Showing up late without notice is a small but genuine credibility dent.</div></div>
+      </div>
+    </div>
+
+    <!-- THE UNWRITTEN -->
+    <div id="poland-unwritten" class="section-panel">
+      <p class="panel-intro">Every culture has rules that nobody spells out — things that seem obvious from the inside and invisible from the outside. These are some of the ones worth knowing before you find out the hard way.</p>
+      <div class="item-row">
+        <div class="item-title">Hospitality is non-negotiable</div>
+        <div class="item-body">If you visit a Polish colleague's home and decline food or drink, you'll cause genuine discomfort — even if you're not hungry. Accepting, even symbolically, is part of the social contract. Refusing repeatedly reads less as politeness and more as rejection.</div>
+        <div class="item-aside"><strong>In practice:</strong> Accept something. Even a biscuit or a glass of water signals that you're comfortable and that you respect the hospitality being offered.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">History is personal, not academic</div>
+        <div class="item-body">WWII, the partitions, the Soviet occupation, Katyń, Solidarity — these aren't distant events for most Polish people. They're carried across generations, talked about at family tables, and felt personally. Treating them as pub-quiz trivia or being visibly indifferent when they come up will land badly.</div>
+        <div class="item-aside"><strong>In practice:</strong> You don't need to be an expert. Showing genuine curiosity — asking questions, listening — is enough.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">The person who matters isn't always the person with the title</div>
+        <div class="item-body">In Polish workplaces, the actual influence and the official hierarchy don't always match. There's often someone without a senior title who has been there longest, knows everyone, and whose opinion quietly shapes decisions. <strong>Pay attention to who others defer to informally</strong>, not just who chairs the meeting.</div>
+        <div class="item-aside"><strong>In practice:</strong> Before an important meeting, ask your Polish contact — "is there anyone else whose input matters here?" The answer is often illuminating.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Warmth isn't given to strangers — it's earned</div>
+        <div class="item-body">Unsolicited warmth from someone you don't know can read as odd or insincere in Poland. A Polish colleague who seems reserved when you first meet isn't being unfriendly — <strong>they're just treating you like a stranger, which is what you are at that point.</strong> Once the relationship develops, the warmth is real and often lasting.</div>
+        <div class="item-aside"><strong>In practice:</strong> Don't perform friendliness — just be genuine. Show interest, ask real questions, follow through on things you said you'd do.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Knowing something about Poland genuinely matters</div>
+        <div class="item-body">Poland has spent much of its modern history being overlooked or reduced to a handful of clichés. When someone makes the effort to know something real — a city beyond Warsaw, a historical event, a film, a musician — it signals that you see Poland as something worth knowing. <strong>It doesn't take much</strong>, but the effect is disproportionate to the effort.</div>
+        <div class="item-aside"><strong>Easy entry points:</strong> Chopin, Robert Lewandowski, the Solidarity movement, the film Ida, the fact that Poles cracked the Enigma code before the British.</div>
+      </div>
+      <div class="item-row">
+        <div class="item-title">Name days — the birthday you didn't know about</div>
+        <div class="item-body">Every name has a corresponding day in the calendar, and many Poles celebrate their "imieniny" (name day) as seriously as — sometimes more than — their birthday. <strong>Remembering it unprompted is a small thing that lands as a large one.</strong></div>
+        <div class="item-aside"><strong>In practice:</strong> A quick search for "Polish name day calendar" will tell you when your Polish colleagues' name days fall. Worth two minutes.</div>
+      </div>
+    </div>
+
+    <!-- DECODER -->
+    <div id="poland-decoder" class="section-panel">
+      <p class="panel-intro">Most friction between colleagues from different cultures isn't about bad intentions — it's about different defaults. Here's what's often going on underneath.</p>
+      <div class="item-row">
+        <div class="clash-meta"><span class="tag">Polish culture</span><span class="tag-meets">meets</span><span class="tag">peach cultures — warm and open by default</span></div>
+        <div class="item-title">"They seem cold and hard to read"</div>
+        <div class="item-body"><strong>Polish warmth is reserved for people you know</strong>, not extended as a default to everyone. It's not a closed door — it's a door that opens gradually. Once it does, the relationship tends to be genuine and durable. Don't mistake the starting point for the whole picture.</div>
+        <div class="item-aside"><strong>What helps:</strong> Don't try to accelerate warmth by being more effusive — it tends to have the opposite effect. Show up consistently, follow through, ask real questions.</div>
+      </div>
+      <div class="item-row">
+        <div class="clash-meta"><span class="tag">Polish culture</span><span class="tag-meets">meets</span><span class="tag">high-positivity cultures — enthusiastic and vocal</span></div>
+        <div class="item-title">"I can't tell if they're actually on board"</div>
+        <div class="item-body">Polish colleagues tend to show engagement through <strong>focus, hard questions, and critical input</strong> rather than expressed excitement. A Polish colleague who says "I see two problems with this" is often more invested than one who says "sounds good."</div>
+        <div class="item-aside"><strong>What helps:</strong> Ask directly — "what do you think needs work here?" rather than "are you happy with this?" You'll get more honest signal.</div>
+      </div>
+      <div class="item-row">
+        <div class="clash-meta"><span class="tag">Polish culture</span><span class="tag-meets">meets</span><span class="tag">very direct cultures — blunt feedback as default</span></div>
+        <div class="item-title">"They shut down after critical feedback"</div>
+        <div class="item-body">Polish colleagues are direct — but directness operates within a relationship. When blunt feedback comes from someone you don't know well, it doesn't land as efficient honesty — it lands as aggression. <strong>The same words mean different things depending on who's saying them.</strong></div>
+        <div class="item-aside"><strong>What helps:</strong> Build the relationship first. Even a few informal interactions before a difficult conversation changes how feedback is received.</div>
+      </div>
+      <div class="item-row">
+        <div class="clash-meta"><span class="tag">Polish culture</span><span class="tag-meets">meets</span><span class="tag">flat-hierarchy cultures — everyone speaks equally</span></div>
+        <div class="item-title">"Junior colleagues seem passive in meetings"</div>
+        <div class="item-body">In more hierarchical Polish environments, juniors may wait for seniors to set direction before weighing in. <strong>It's not passivity — it's a different set of rules about when it's appropriate to speak.</strong> Ask directly for input and you'll often get it.</div>
+        <div class="item-aside"><strong>What helps:</strong> "I'd really like to hear your take on this" directed at specific people works better than an open invitation to the room.</div>
+      </div>
+      <div class="item-row">
+        <div class="clash-meta"><span class="tag">Polish culture</span><span class="tag-meets">meets</span><span class="tag">debate cultures — challenge as intellectual sport</span></div>
+        <div class="item-title">"They don't push back in the meeting, then disagree afterwards"</div>
+        <div class="item-body">For many Polish colleagues, <strong>raising objections publicly, especially to someone senior, feels unnecessarily confrontational</strong>. The conversation after the meeting isn't avoidance — it's the real conversation. If a Polish colleague asks for a word after a meeting, take it seriously.</div>
+        <div class="item-aside"><strong>What helps:</strong> Share the agenda and key questions in advance. Time to think before speaking makes public contribution much more likely.</div>
+      </div>
+    </div>
+
+    <!-- RABBIT HOLE -->
+    <div id="poland-rabbit" class="section-panel">
+      <p class="panel-intro">Five things about Poland that are genuinely worth knowing — good conversation starters, better for understanding where your Polish colleagues are coming from.</p>
+      <div class="rabbit-item">
+        <div class="rabbit-num">1</div>
+        <div>
+          <div class="item-title">The food is extraordinary — you just won't find it in restaurants</div>
+          <div class="item-body">Polish cuisine is one of Europe's great undiscovered ones, and it's undiscovered for a specific reason: it lives at home. Pierogi, bigos, żurek, gołąbki, barszcz — these dishes are deeply tied to family kitchens, Sunday tables, and grandmothers' recipes. If a Polish colleague ever invites you for a home-cooked meal, <strong>say yes without hesitation</strong>.</div>
+          <div class="item-aside"><strong>Conversation opener:</strong> Ask what their family makes at Christmas or Easter. Strong opinions about whose grandmother does it best are guaranteed.</div>
+        </div>
+      </div>
+      <div class="rabbit-item">
+        <div class="rabbit-num">2</div>
+        <div>
+          <div class="item-title">Chopin, Copernicus, Curie — and the endless fight to keep them</div>
+          <div class="item-body">All three have been claimed or quietly appropriated by other countries over the centuries. Copernicus is claimed by Germany. Marie Curie is often listed as French. Chopin was half-French and lived in Paris. <strong>For Poles, asserting their Polishness is not pedantry — it's a matter of historical record and national dignity.</strong></div>
+          <div class="item-aside"><strong>Conversation opener:</strong> Ask which of the three they feel most strongly about — there's usually a favourite and always a story.</div>
+        </div>
+      </div>
+      <div class="rabbit-item">
+        <div class="rabbit-num">3</div>
+        <div>
+          <div class="item-title">Sports icons and the art of celebrating against the odds</div>
+          <div class="item-body">Poland is not a country that expects to dominate global sport — which makes every success feel enormous. Lewandowski carries national pride well beyond football. The volleyball team has won multiple world championships. And Adam Małysz — a ski jumper from a small mountain town — became one of the most beloved figures in modern Polish history. <strong>These aren't just athletes; they're proof of something.</strong></div>
+          <div class="item-aside"><strong>Conversation opener:</strong> Mention Małysz to anyone over 35. Watch what happens.</div>
+        </div>
+      </div>
+      <div class="rabbit-item">
+        <div class="rabbit-num">4</div>
+        <div>
+          <div class="item-title">Polish cinema is one of Europe's finest — and barely anyone outside Poland knows it</div>
+          <div class="item-body">Andrzej Wajda and Krzysztof Kieślowski shaped world cinema in ways rarely attributed back to Poland. Kieślowski's <strong>Dekalog</strong> (1988) — a ten-part series set in a Warsaw housing estate — is considered among the greatest achievements in television history. Pawlikowski's <strong>Cold War</strong> (2018) is a stunning love story across the Iron Curtain.</div>
+          <div class="item-aside"><strong>Watch list:</strong> Dekalog (start with ep. 1 or 5) · Cold War (2018) · Ida (2013)</div>
+        </div>
+      </div>
+      <div class="rabbit-item">
+        <div class="rabbit-num">5</div>
+        <div>
+          <div class="item-title">Poland's tech scene is quietly world-class</div>
+          <div class="item-body">CD Projekt Red — the studio behind The Witcher and Cyberpunk 2077 — is one of the most acclaimed game developers in the world. Polish mathematicians cracked the Enigma cipher in 1932, years before Bletchley Park. Warsaw has grown into a serious European tech hub that consistently flies under the radar. <strong>The gap between Poland's reputation and its actual output is one of the more interesting stories in European tech.</strong></div>
+          <div class="item-aside"><strong>Conversation opener:</strong> Ask a Polish colleague what they think of CD Projekt. Strong opinions guaranteed.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     INDIA (placeholder)
+══════════════════════════════════ -->
+<div id="view-india" class="view">
+  <div class="country-page">
+    <div class="cp-hero">
+      <div>
+        <div class="eyebrow">South Asia</div>
+        <h1>In<em>dia</em></h1>
+        <p class="cp-tagline">One of the world's oldest civilisations and its largest democracy — a country of profound diversity, ambition, and contradiction.</p>
+        <div class="meta-pills">
+          <span class="pill">Population 1.4B</span>
+          <span class="pill">Capital: New Delhi</span>
+          <span class="pill">Languages: Hindi, English + 20 official</span>
+          <span class="pill">Currency: Indian Rupee (INR)</span>
+        </div>
+      </div>
+      <div class="cp-flag-block">
+        <div class="cp-flag-wrap">
+          <div class="flag-in" style="height:100%;"><div class="f1"></div><div class="f2"><div class="chakra" style="width:12px;height:12px;"></div></div><div class="f3"></div></div>
+        </div>
+        <div class="cp-flag-label">INDIA</div>
+      </div>
+    </div>
+    <div class="section-tabs">
+      <button class="section-tab" onclick="showTab('india','coming',this)">At work</button>
+      <button class="section-tab" onclick="showTab('india','coming',this)">The unwritten</button>
+      <button class="section-tab" onclick="showTab('india','coming',this)">Misunderstanding decoder</button>
+      <button class="section-tab" onclick="showTab('india','coming',this)">Down the rabbit hole</button>
+    </div>
+    <div id="india-coming" class="section-panel">
+      <div class="coming-soon">Content coming soon.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     USA (placeholder)
+══════════════════════════════════ -->
+<div id="view-usa" class="view">
+  <div class="country-page">
+    <div class="cp-hero">
+      <div>
+        <div class="eyebrow">North America</div>
+        <h1>United <em>States</em></h1>
+        <p class="cp-tagline">The world's most influential cultural export — and one of its most frequently misread working cultures.</p>
+        <div class="meta-pills">
+          <span class="pill">Population 335M</span>
+          <span class="pill">Capital: Washington D.C.</span>
+          <span class="pill">Language: English</span>
+          <span class="pill">Currency: US Dollar (USD)</span>
+        </div>
+      </div>
+      <div class="cp-flag-block">
+        <div class="cp-flag-wrap">
+          <svg viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <rect width="90" height="60" fill="#B22234"/>
+            <rect y="4.6" width="90" height="4.6" fill="#fff"/>
+            <rect y="13.8" width="90" height="4.6" fill="#fff"/>
+            <rect y="23" width="90" height="4.6" fill="#fff"/>
+            <rect y="32.2" width="90" height="4.6" fill="#fff"/>
+            <rect y="41.4" width="90" height="4.6" fill="#fff"/>
+            <rect y="50.6" width="90" height="4.6" fill="#fff"/>
+            <rect width="36" height="32" fill="#3C3B6E"/>
+            <g fill="#fff" font-size="4">
+              <text x="3" y="6">★</text><text x="9" y="6">★</text><text x="15" y="6">★</text><text x="21" y="6">★</text><text x="27" y="6">★</text><text x="33" y="6">★</text>
+              <text x="6" y="10">★</text><text x="12" y="10">★</text><text x="18" y="10">★</text><text x="24" y="10">★</text><text x="30" y="10">★</text>
+              <text x="3" y="14">★</text><text x="9" y="14">★</text><text x="15" y="14">★</text><text x="21" y="14">★</text><text x="27" y="14">★</text><text x="33" y="14">★</text>
+              <text x="6" y="18">★</text><text x="12" y="18">★</text><text x="18" y="18">★</text><text x="24" y="18">★</text><text x="30" y="18">★</text>
+              <text x="3" y="22">★</text><text x="9" y="22">★</text><text x="15" y="22">★</text><text x="21" y="22">★</text><text x="27" y="22">★</text><text x="33" y="22">★</text>
+              <text x="6" y="26">★</text><text x="12" y="26">★</text><text x="18" y="26">★</text><text x="24" y="26">★</text><text x="30" y="26">★</text>
+              <text x="3" y="30">★</text><text x="9" y="30">★</text><text x="15" y="30">★</text><text x="21" y="30">★</text><text x="27" y="30">★</text><text x="33" y="30">★</text>
+            </g>
+          </svg>
+        </div>
+        <div class="cp-flag-label">USA</div>
+      </div>
+    </div>
+    <div class="section-tabs">
+      <button class="section-tab" onclick="showTab('usa','coming',this)">At work</button>
+      <button class="section-tab" onclick="showTab('usa','coming',this)">The unwritten</button>
+      <button class="section-tab" onclick="showTab('usa','coming',this)">Misunderstanding decoder</button>
+      <button class="section-tab" onclick="showTab('usa','coming',this)">Down the rabbit hole</button>
+    </div>
+    <div id="usa-coming" class="section-panel">
+      <div class="coming-soon">Content coming soon.</div>
+    </div>
+  </div>
+</div>
+
+<footer>Cultural Atlas</footer>
+
+<script>
+  function showHome() {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-home').classList.add('active');
+    document.getElementById('nav-back').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+
+  function showCountry(country) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + country).classList.add('active');
+    document.getElementById('nav-back').style.display = 'flex';
+    // reset all tabs and panels for this country — nothing active on load
+    const view = document.getElementById('view-' + country);
+    view.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    view.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+    window.scrollTo(0, 0);
+  }
+
+  function showTab(country, panel, btn) {
+    const view = document.getElementById('view-' + country);
+    view.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    view.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(country + '-' + panel).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
