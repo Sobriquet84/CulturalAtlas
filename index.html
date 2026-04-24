@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cultural Atlas</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Gelion';
+      src: local('Gelion');
+      font-weight: 100 900;
+      font-style: normal;
+    }
+  </style>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,8 +26,8 @@
     --border: rgba(0,0,0,0.09);
     --border-mid: rgba(0,0,0,0.14);
     --red: #C8102E;
-    --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'DM Sans', system-ui, sans-serif;
+    --serif: 'Gelion', 'Playfair Display', Georgia, serif;
+    --sans: 'Gelion', 'DM Sans', system-ui, sans-serif;
   }
 
   body { font-family: var(--sans); background: var(--surface); color: var(--ink); font-size: 16px; line-height: 1.6; }
@@ -254,7 +262,7 @@
   }
   .cp-hero h1 { font-family: var(--serif); font-size: clamp(40px, 6vw, 58px); font-weight: 400; line-height: 1.05; margin-bottom: 0.75rem; }
   .cp-hero h1 em { font-style: normal; color: var(--ink); }
-  .cp-tagline { font-size: 15px; color: var(--ink-mid); font-weight: 300; line-height: 1.75; max-width: 460px; margin-bottom: 1.25rem; }
+  .cp-tagline { font-size: 17px; color: var(--ink-mid); font-weight: 300; line-height: 1.75; max-width: 460px; margin-bottom: 1.25rem; }
   .meta-pills { display: flex; gap: 8px; flex-wrap: wrap; }
   .pill { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 0.5px solid var(--border-mid); color: var(--ink-mid); background: white; }
 
@@ -264,7 +272,7 @@
 
   /* intro */
   .cp-intro { padding: 2.5rem 0; border-bottom: 0.5px solid var(--border); }
-  .cp-intro p { font-size: 15px; color: var(--ink-mid); line-height: 1.85; font-weight: 300; margin-bottom: 1rem; }
+  .cp-intro p { font-size: 17px; color: var(--ink-mid); line-height: 1.85; font-weight: 300; margin-bottom: 1rem; }
   .cp-intro p:last-child { margin-bottom: 0; }
   .cp-intro strong { font-weight: 500; color: var(--ink); }
 
@@ -289,13 +297,13 @@
   .section-panel { display: none; padding: 2.5rem 0; }
   .section-panel.active { display: block; }
 
-  .panel-intro { font-size: 15px; color: var(--ink-mid); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; max-width: 580px; }
+  .panel-intro { font-size: 17px; color: var(--ink-mid); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; max-width: 580px; }
 
   /* content rows */
   .item-row { padding: 1.25rem 0; border-top: 0.5px solid var(--border); }
   .item-row:last-of-type { border-bottom: 0.5px solid var(--border); }
-  .item-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
-  .item-body { font-size: 14px; color: var(--ink-mid); line-height: 1.8; font-weight: 300; }
+  .item-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
+  .item-body { font-size: 16px; color: var(--ink-mid); line-height: 1.8; font-weight: 300; }
   .item-body strong { font-weight: 500; color: var(--ink); }
   .item-aside { margin-top: 0.75rem; padding: 0.65rem 0.9rem; background: var(--surface-2); border-radius: 8px; font-size: 13px; color: var(--ink-mid); line-height: 1.65; font-weight: 300; }
   .item-aside strong { font-weight: 500; color: var(--ink); }
@@ -310,7 +318,7 @@
   .tips-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 1rem; }
   .tip { display: flex; gap: 12px; margin-bottom: 0.75rem; align-items: flex-start; }
   .tip-arrow { color: var(--ink-faint); font-size: 13px; padding-top: 3px; flex-shrink: 0; }
-  .tip-text { font-size: 14px; color: var(--ink-mid); line-height: 1.75; font-weight: 300; }
+  .tip-text { font-size: 16px; color: var(--ink-mid); line-height: 1.75; font-weight: 300; }
   .tip-text strong { font-weight: 500; color: var(--ink); }
 
   /* rabbit hole */
@@ -1198,8 +1206,8 @@
         <div class="item-body">Americans are comfortable saying what they want, what they think, and what they need. Requests are made clearly, disagreement is often expressed without much softening, and debate is welcomed. <strong>What's less comfortable is delivering truly critical feedback, sitting with conflict, or saying something that might seriously upset the relationship.</strong> The directness is real; it just has a ceiling. Above a certain level of uncomfortable truth, the culture tends to go indirect, vague, or quietly avoidant.</div>
       </div>
       <div class="item-row">
-        <div class="item-title">Time is money — and they mean it</div>
-        <div class="item-body">Meetings start on time. Agendas are circulated. There is a strong preference for efficiency over process — "let's just get this done" rather than "let's make sure everyone has been fully heard." Rambling, over-contextualising, or spending the first twenty minutes on pleasantries can read as wasting everyone's time. <strong>The American meeting is an execution environment, not a consensus-building ritual.</strong></div>
+        <div class="item-title">Time is money — and they often mean it</div>
+        <div class="item-body">In many American workplaces — particularly in corporate and fast-moving environments — you may find that meetings start close to on time, agendas are circulated in advance, and there's a strong preference for efficiency over process. Don't be surprised if rambling, over-contextualising, or extended pleasantries at the start of a meeting are gently redirected — the instinct is often to treat the meeting as an execution environment rather than a consensus-building ritual. <strong>That said, this varies considerably by industry, region, and company culture.</strong> A startup in Austin and a law firm in New York are operating on different clocks.</div>
       </div>
       <div class="item-row">
         <div class="item-title">Individual ownership is a real value</div>
@@ -1216,9 +1224,9 @@
       <div class="tips-block">
         <div class="tips-label">Practical tips</div>
         <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Match the energy, at least partially.</strong> You don't have to be an evangelist — but responding to American enthusiasm with flat affect reads as disengaged or unfriendly.</div></div>
-        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>State your point early.</strong> American communication is bottom-line-up-front. Start with what you want or think, then explain why. Context after conclusion, not before.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>State your point early.</strong> American communication tends to be bottom-line-up-front in professional settings. Starting with what you want or think, then explaining why, tends to land better than building to a conclusion. Context after, not before.</div></div>
         <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Follow up in writing.</strong> Verbal agreements can evaporate. A brief email confirming what was decided is normal practice and protects everyone.</div></div>
-        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Accept the small talk.</strong> "How are you?" is not a real inquiry — "good thanks, you?" is the correct response. Treating it as an invitation for reflection will confuse the interaction.</div></div>
+        <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Accept the small talk.</strong> "How are you?" is often not a real inquiry — "good thanks, you?" is the correct response in passing. Treating it as an invitation for reflection can confuse the interaction — though context matters (see The Unwritten).</div></div>
         <div class="tip"><span class="tip-arrow">→</span><div class="tip-text"><strong>Volunteer your accomplishments.</strong> In many cultures, letting your work speak for itself is the right move. In the US, if you don't advocate for your own contributions, there is a real chance nobody else will.</div></div>
       </div>
     </div>
@@ -1227,9 +1235,9 @@
     <div id="usa-unwritten" class="section-panel">
       <p class="panel-intro">Every culture has rules that nobody spells out — things that seem obvious from the inside and invisible from the outside. These are some of the ones worth knowing before you find out the hard way.</p>
       <div class="item-row">
-        <div class="item-title">"How are you?" is a greeting, not a question</div>
-        <div class="item-body">This trips up almost every foreign visitor at least once. "How are you?", "how's it going?", "how are things?" are phatic expressions — social rituals, not genuine inquiries. The expected response is brief and positive: "good, thanks" or "great, how are you?" Launching into an honest answer about how things actually are produces a moment of social confusion that is awkward for everyone involved. <strong>The question is a handshake, not an opening.</strong></div>
-        <div class="item-aside"><strong>In practice:</strong> Brief, positive, reciprocal. "Good thanks — busy but good, you?" is the entire correct answer to this question in a hallway.</div>
+        <div class="item-title">"How are you?" is a greeting, not a question — usually</div>
+        <div class="item-body">This trips up almost every foreign visitor at least once. In hallways, at the start of calls, or when passing someone in the office, "how are you?", "how's it going?", "how are things?" are often phatic expressions — social rituals rather than genuine inquiries, where the expected response is brief and positive: "good, thanks" or "great, how are you?" That said, context changes everything — the same question from a manager at the start of a one-to-one, or from a trusted colleague checking in after a difficult week, is often exactly what it sounds like. Reading the setting, the relationship, and the pace of the exchange is the actual skill. <strong>In passing, it's ritual; in a real conversation, it's an invitation.</strong></div>
+        <div class="item-aside"><strong>In practice:</strong> Default to brief and positive in passing. In a dedicated check-in with someone who has the time and the relationship for it, a more honest answer is usually welcome.</div>
       </div>
       <div class="item-row">
         <div class="item-title">Litigation-awareness shapes communication in invisible ways</div>
@@ -1238,7 +1246,7 @@
       </div>
       <div class="item-row">
         <div class="item-title">Work is identity — more so than almost anywhere</div>
-        <div class="item-body">"What do you do?" is often the second question in a social conversation in the US, asked within minutes of meeting someone. This isn't superficiality — it reflects a culture where <strong>what you.ve built, achieved, or contributed is considered central to who you are.</strong> The flip side is that unemployment, career change, or underemployment carry social weight that feels disproportionate to many outsiders.</div>
+        <div class="item-body">"What do you do?" is often the second question in a social conversation in the US, asked within minutes of meeting someone. This isn't superficiality — it reflects a culture where <strong>what you've built, achieved, or contributed is considered central to who you are.</strong> The flip side is that unemployment, career change, or underemployment carry social weight that feels disproportionate to many outsiders.</div>
         <div class="item-aside"><strong>In practice:</strong> Have a clear, confident answer to "what do you do?" ready. How you frame your work — not just what it is — shapes the impression you make in the first five minutes.</div>
       </div>
       <div class="item-row">
@@ -1264,9 +1272,9 @@
       </div>
       <div class="item-row">
         <div class="clash-meta"><span class="tag">American culture</span><span class="tag-meets">meets</span><span class="tag">cultures that expect ongoing directness</span></div>
-        <div class="item-title">"They said everything was fine, then blindsided me in a performance review"</div>
-        <div class="item-body">American managers are often deeply uncomfortable delivering critical feedback in real time. The cultural instinct is to preserve the relationship, stay positive, and address problems through formal channels when they become unavoidable. <strong>This means "you're doing great" can genuinely coexist with a private view that there are significant issues</strong> — which then surface suddenly in a formal context. It's not bad faith; it's conflict-avoidance with institutional structure around it.</div>
-        <div class="item-aside"><strong>What helps:</strong> Ask explicitly and regularly — "is there anything I should be doing differently?" creates the opening. Most American managers, if directly asked, will give more honest feedback than they'd volunteer.</div>
+        <div class="item-title">"The feedback always sounded positive — I didn't realise there was a real problem"</div>
+        <div class="item-body">American professional culture tends to be uncomfortable with delivering criticism plainly. Critical feedback is rarely absent — but it's often carefully packaged: framed as a "development opportunity," sandwiched between genuine positive observations, or described in language so constructive that the weight of the concern can be hard to read. A manager might say "one area to grow into" when they mean "this is a recurring issue that needs to change." <strong>The intent is not to deceive — it's a genuine preference for framing feedback in a way that preserves motivation and the relationship.</strong> The challenge is that the softening can sometimes obscure the signal entirely.</div>
+        <div class="item-aside"><strong>What helps:</strong> Ask explicitly and regularly — "is there anything I should be doing differently?" or "what would make the biggest difference to how I'm showing up?" creates the opening. Most American managers, if directly asked, will give more specific and honest feedback than they'd volunteer unprompted.</div>
       </div>
       <div class="item-row">
         <div class="clash-meta"><span class="tag">American culture</span><span class="tag-meets">meets</span><span class="tag">cultures where self-promotion is uncomfortable</span></div>
@@ -8072,9 +8080,9 @@ That background has shaped a distinctive cultural mindset. Colombian society ten
       <div class="rabbit-item">
         <div class="rabbit-num">1</div>
         <div>
-          <div class="item-title">Venezuela was one of the wealthiest countries in Latin America — and the speed of the collapse is historically unusual</div>
-          <div class="item-body">In the 1970s, Venezuela had the highest per capita income in Latin America, a growing middle class, and oil revenues that funded real development. The country that collapsed into hyperinflation and mass emigration in the 2010s is the same country — within living memory of many working-age Venezuelans. <strong>This is not a country with no memory of better times.</strong> The particular quality of Venezuelan grief about the current situation comes from knowing, in detail, what was lost and when.</div>
-          <div class="item-aside"><strong>Conversation opener:</strong> Ask a Venezuelan colleague over 40 what Venezuela was like when they were growing up. The contrast with the present is often the most honest window into how they carry the situation.</div>
+          <div class="item-title">Venezuela produces more international beauty queens than almost any other country — and there's a whole industry behind it</div>
+          <div class="item-body">Venezuela has won Miss Universe seven times and Miss World seven times — a record that no other country comes close to matching. But what makes it genuinely fascinating is the infrastructure behind it: dedicated modelling schools, rigorous physical and presentation coaching, and a pipeline that treats beauty pageant preparation as a serious professional pursuit. The Venevisión talent factory and schools run by figures like Osmel Sousa — the so-called "Beauty Czar" who presided over Venezuela's pageant dominance for decades — turned the country into something closer to an athletic programme than a glamour contest. For many Venezuelan families, particularly from the interior, a daughter winning a regional title was a real path to social mobility. <strong>The pageant culture is not vanity — it is ambition with a very specific channel.</strong> Asking a Venezuelan colleague about it tends to produce a more complicated and interesting answer than you'd expect: pride, some irony, strong opinions about whether Sousa's era was a good thing, and usually a story about someone they knew who competed.</div>
+          <div class="item-aside"><strong>Conversation opener:</strong> Ask a Venezuelan colleague what they think the pageant culture says about Venezuela. The answers are rarely simple.</div>
         </div>
       </div>
       <div class="rabbit-item">
